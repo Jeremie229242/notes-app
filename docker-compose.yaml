@@ -1,0 +1,23 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: notesapp-postgres
+    environment:
+      POSTGRES_USER: notesapp
+      POSTGRES_PASSWORD: notesapp123
+      POSTGRES_DB: notesapp
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-database.sql:/docker-entrypoint-initdb.d/init-database.sql
+    networks:
+      - notesapp-network
+
+
+volumes:
+  postgres_data:
+
+networks:
+  notesapp-network:
+    driver: bridge
