@@ -13,11 +13,13 @@ router.post(
 );
 
 router.post("/login", validateRequest(loginSchema), authController.login);
+
 router.post(
   "/refresh",
   validateRequest(refreshTokenSchema),
   authController.refreshTokens
 );
+
 router.post(
   "/logout",
   validateRequest(refreshTokenSchema),
