@@ -13,7 +13,7 @@ export interface UserProfile {
     userId: string;
     firstName?: string | null;
     lastName?: string | null;
-    telephone?: string | null;
+   
     bio?: string | null;
     avatarUrl?: string | null;
     preferences?: any;
@@ -26,7 +26,7 @@ export interface UserProfile {
   export interface UpdateProfileRequest {
     firstName?: string | null;
     lastName?: string | null;
-    telephone?: string | null;
+    
     bio?: string | null;
     avatarUrl?: string | null;
     preferences?: Record<string, any>;

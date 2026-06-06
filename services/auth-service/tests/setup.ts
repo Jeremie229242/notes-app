@@ -1,6 +1,6 @@
-import { create } from "node:domain";
+
 import { JWTPayload } from "../../../partage/types";
-import jestConfig from "../jest.config";
+
 
 // Mock environment variables
 process.env.JWT_SECRET = "test-jwt-secret-key-for-testing-only";
