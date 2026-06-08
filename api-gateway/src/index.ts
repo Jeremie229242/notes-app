@@ -34,6 +34,11 @@ app.use(
     ],
   })
 );
+app.use(
+  helmet({
+    crossOriginEmbedderPolicy: false,
+  })
+);
 
 // parse JSON bodies
 app.use(express.json({ limit: "10mb" }));
