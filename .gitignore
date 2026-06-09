@@ -2,6 +2,7 @@
 **/node_modules/
 
 **/.env/
+**/.gitignore/
 
 api-gateway/node_modules
 api-gateway/.env
@@ -10,4 +11,8 @@ services/auth-service/node_modules
 services/user-service/node_modules
 services/user-service/.env
 services/auth-service/.env
+services/notes-service/node_modules
+services/notes-service/.env
+services/tags-service/node_modules
+services/tags-service/.env
 
