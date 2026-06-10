@@ -2,12 +2,12 @@
 import { JWTPayload } from "../../../partage/types";
 
 
-// Mock environment variables
-process.env.JWT_SECRET = "test-jwt-secret-key-for-testing-only";
-process.env.JWT_REFRESH_SECRET = "test-jwt-refresh-secret-key-for-testing-only";
+// Mock variables  d'environment 
+process.env.JWT_SECRET = "test-jwt-secret-key";
+process.env.JWT_REFRESH_SECRET = "test-jwt-refresh-secret-key";
 process.env.JWT_EXPIRES_IN = "15m";
 process.env.JWT_REFRESH_EXPIRES_IN = "7d";
-process.env.BCRYPT_ROUNDS = "4"; // Lower rounds for faster tests
+process.env.BCRYPT_ROUNDS = "4"; // Des tours moins longs pour des tests plus rapides
 process.env.NODE_ENV = "test";
 
 // Mock prisma client
@@ -32,13 +32,13 @@ const mockPrismaClient = {
   $connect: jest.fn(),
 };
 
-// Mock the database module
+//  la base de donnée de Mock module
 jest.mock("../src/database", () => mockPrismaClient);
 
 // mock test utils
 global.mockPrisma = mockPrismaClient;
 
-// global data for test
+// La base de donnée global pour test
 export const testUser = {
   id: "test-user-id",
   email: "testuser123@domain.com",
@@ -51,7 +51,7 @@ export const testRefreshToken = {
   id: "test-refresh-token-id",
   userId: testUser.id,
   token: "test-refresh-token",
-  expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days from now
+  expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 jour apres expiration
   createdAt: new Date(),
 };
 
@@ -59,10 +59,10 @@ export const testJwtPayload: JWTPayload = {
   userId: "test-user-id",
   email: testUser.email,
   iat: Math.floor(Date.now() / 1000),
-  exp: Math.floor(Date.now() / 1000) + 60 * 15, // 15 minutes from now
+  exp: Math.floor(Date.now() / 1000) + 60 * 15, // 15 minutes avant expiration
 };
 
-// helper function to reset mocks before each test
+// fonction auxiliaire pour réinitialiser les mocks avant chaque test
 export function resetAllMocks() {
   Object.values(mockPrismaClient.user).forEach((mock) => {
     if (jest.isMockFunction(mock)) {

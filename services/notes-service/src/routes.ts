@@ -5,7 +5,7 @@ import { createNoteSchema, getNotesByUserSchema } from "./validation";
 
 const router = Router();
 
-//All routes require authentication
+//Tous les routes nécessitent une authentification.
 router.use(authenticateToken);
 
 //Notes CRUD Operations

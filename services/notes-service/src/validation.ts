@@ -2,41 +2,41 @@ import Joi from "joi";
 
 export const createNoteSchema = Joi.object({
   title: Joi.string().min(1).max(200).required().messages({
-    "string.min": "Title must be at least 1 character long",
-    "string.max": "Title must not exceed 200 characters",
-    "any.required": "Title is required",
+    "string.min": "Le titre doit comporter au moins 1 caractère.",
+    "string.max": "Le titre ne doit pas dépasser 200 caractères.",
+    "any.required": "Titre est obligatoire",
   }),
   content: Joi.string().min(1).max(50000).required().messages({
-    "string.min": "Content must be at least 1 character long",
-    "string.max": "Content must not exceed 50,000 characters",
-    "any.required": "Content is required",
+    "string.min": "Content doit comporter au moins 1 caractère",
+    "string.max": "Content ne doit pas dépasser 50 000 caractères",
+    "any.required": "Content est obligatoire",
   }),
   tagIds: Joi.array().items(Joi.string().uuid()).optional().messages({
-    "array.base": "Tag IDs must be an array",
-    "string.uuid": "Each tag ID must be a valid UUID",
+    "array.base": "Tag IDs doit être un tableau",
+    "string.uuid": "Chaque identifiant tags doit être valide UUID",
   }),
 });
 
 export const updateNoteSchema = Joi.object({
   title: Joi.string().min(1).max(200).optional().messages({
-    "string.min": "Title must be at least 1 character long",
-    "string.max": "Title must not exceed 200 characters",
+    "string.min": "Titre doit comporter au moins 1 caractère",
+    "string.max": "Le titre ne doit pas dépasser 200 caractères.",
   }),
   content: Joi.string().min(1).max(50000).optional().messages({
-    "string.min": "Content must be at least 1 character long",
-    "string.max": "Content must not exceed 50,000 characters",
+    "string.min": "Content doit comporter au moins 1 caractère",
+    "string.max": "Content ne doit pas dépasser 50 000 caractères",
   }),
   tagIds: Joi.array().items(Joi.string().uuid()).optional().messages({
-    "array.base": "Tag IDs must be an array",
-    "string.uuid": "Each tag ID must be a valid UUID",
+    "array.base": "Tag IDs doit être un tableau",
+    "string.uuid": "Chaque identifiant tags doit être valide UUID",
   }),
 });
 
 export const getNotesByUserSchema = Joi.object({
   page: Joi.number().integer().min(1).optional().default(1).messages({
-    "number.base": "Page must be a number",
-    "number.integer": "Page must be an integer",
-    "number.min": "Page must be at least 1",
+    "number.base": "Page doit être un nombre",
+    "number.integer": "Page doit être un entier",
+    "number.min": "Page doit être au moins 1",
   }),
   limit: Joi.number()
     .integer()
@@ -45,12 +45,12 @@ export const getNotesByUserSchema = Joi.object({
     .optional()
     .default(10)
     .messages({
-      "number.base": "Limit must be a number",
-      "number.integer": "Limit must be an integer",
-      "number.min": "Limit must be at least 1",
-      "number.max": "Limit must not exceed 100",
+      "number.base": "La limite doit être un nombre",
+      "number.integer": "La limite doit être un entier",
+      "number.min": "La limite doit être d'au moins 1",
+      "number.max": "La limite ne doit pas dépasser 100",
     }),
   search: Joi.string().max(200).optional().messages({
-    "string.max": "Search query must not exceed 200 characters",
+    "string.max": "La requête de recherche ne doit pas dépasser 200 caractères.",
   }),
 });

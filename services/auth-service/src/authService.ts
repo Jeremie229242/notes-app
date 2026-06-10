@@ -20,24 +20,24 @@ export class AuthService {
     this.bcryptRounds = parseInt(process.env.BCRYPT_ROUNDS || "10", 10);
 
     if (!this.jwtSecret || !this.jwtRefreshSecret) {
-      throw new Error("JWT secrets are not defined in environment variables");
+      throw new Error(" Les JWT secrets ne sont pas définis dans les variables d'environnement");
     }
   }
 
   async register(email: string, password: string): Promise<AuthTokens> {
-    // check if user already exists
+    // check si utilisateur exists deja
     const existingUser = await prisma.user.findUnique({
       where: { email },
     });
 
     if (existingUser) {
-      throw createServiceError("User already exists", 409);
+      throw createServiceError("Utilisateur existe deja", 409);
     }
 
-    // hash the password
+    // hash le mot de passe
     const hashedPassword = await bcrypt.hash(password, this.bcryptRounds);
 
-    // create the user
+    // creéer un utilisateur
     const user = await prisma.user.create({
       data: {
         email,
@@ -45,55 +45,55 @@ export class AuthService {
       },
     });
 
-    // generate tokens
+    // generer le tokens
     return this.generateTokens(user.id, user.email);
   }
 
   async login(email: string, password: string): Promise<AuthTokens> {
-    // find the user
+    // trouver l'utilisateur
     const user = await prisma.user.findUnique({
       where: { email },
     });
 
     if (!user) {
-      throw createServiceError("Invalid email or password", 401);
+      throw createServiceError("Adresse e-mail ou mot de passe invalide", 401);
     }
 
-    // verify the password
+    // verifier le mot de passe
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-      throw createServiceError("Invalid email or password", 401);
+      throw createServiceError("Adresse e-mail ou mot de passe invalide", 401);
     }
 
-    // generate tokens
+    // generer tokens
     return this.generateTokens(user.id, user.email);
   }
 
   async refreshToken(refreshToken: string): Promise<AuthTokens> {
     try {
-      // verify the refresh token
+      // verify le refreshe token
       const decoded = jwt.verify(
         refreshToken,
         this.jwtRefreshSecret
       ) as JWTPayload;
 
-      // check if the refresh token exists in the database
+      // vérifier si le jeton d'actualisation existe dans la base de données
       const storedToken = await prisma.refreshToken.findUnique({
         where: { token: refreshToken },
         include: { user: true },
       });
 
       if (!storedToken || storedToken.expiresAt < new Date()) {
-        throw createServiceError("Invalid or expired refresh token", 401);
+        throw createServiceError("Invalide ou refresh token a expirer", 401);
       }
 
-      // generate new tokens
+      // generer nouvel tokens
       const tokens = await this.generateTokens(
         storedToken.user.id,
         storedToken.user.email
       );
 
-      // delete the old refresh token
+      // supprimmer ancienne refresh token
       await prisma.refreshToken.delete({
         where: { id: storedToken.id },
       });
@@ -103,12 +103,12 @@ export class AuthService {
       if (error instanceof ServiceError) {
         throw error;
       }
-      throw createServiceError("Invalid refresh token", 401, error);
+      throw createServiceError("Invalide refresh token", 401, error);
     }
   }
 
   async logout(refreshToken: string): Promise<void> {
-    // delete the refresh token from the database
+    // supprimer le jeton d'actualisation de la base de données
     await prisma.refreshToken.deleteMany({
       where: { token: refreshToken },
     });
@@ -118,21 +118,21 @@ export class AuthService {
     try {
       const decoded = jwt.verify(token, this.jwtSecret) as JWTPayload;
 
-      // Check if the user exists
+      // Check si l'utilisateur exists
       const user = await prisma.user.findUnique({
         where: { id: decoded.userId },
       });
 
       if (!user) {
-        throw createServiceError("User not found", 404);
+        throw createServiceError("Utilisateur non trouvé", 404);
       }
 
       return decoded;
     } catch (error) {
       if (error instanceof jwt.JsonWebTokenError) {
-        throw createServiceError("Invalid token", 401);
+        throw createServiceError("token Invalide", 401);
       }
-      throw createServiceError("Token validation failed", 500, error);
+      throw createServiceError("Erreur de validation Token ", 500, error);
     }
   }
 
@@ -142,7 +142,7 @@ export class AuthService {
   ): Promise<AuthTokens> {
     const payload = { userId, email };
 
-    // Generate access token
+    // Generer access token
     const accessTokenOptions: SignOptions = {
       expiresIn: this.jwtExpiresIn as StringValue,
     };
@@ -153,7 +153,7 @@ export class AuthService {
       accessTokenOptions
     ) as string;
 
-    // Generate refresh token
+    // Generer refresh token
     const refreshTokenOptions: SignOptions = {
       expiresIn: this.jwtRefreshExpiresIn as StringValue,
     };
@@ -163,9 +163,9 @@ export class AuthService {
       refreshTokenOptions
     ) as string;
 
-    // Store refresh token in the database
+    // Enregistrer refresh token dans la base de donnée
     const expiresAt = new Date();
-    expiresAt.setDate(expiresAt.getDate() + 7); // 7 days from now
+    expiresAt.setDate(expiresAt.getDate() + 7); // 7 jour avant expiration
 
     await prisma.refreshToken.create({
       data: {
@@ -193,7 +193,7 @@ export class AuthService {
     });
 
     if (!user) {
-      throw createServiceError("User not found", 404);
+      throw createServiceError("Utilisateur non trouvé", 404);
     }
 
     return user;

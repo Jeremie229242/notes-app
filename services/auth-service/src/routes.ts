@@ -26,10 +26,10 @@ router.post(
   authController.logout
 );
 
-// Token validation endpoint ( for other services to validate tokens )
+// Point de terminaison de validation des tokens (pour que d'autres services puissent valider les tokens)
 router.post("/validate", authController.validateToken);
 
-// Protected routes
+// Proteger routes
 router.get("/profile", authenticateToken, authController.getProfile);
 router.delete("/profile", authenticateToken, authController.deleteAccount);
 

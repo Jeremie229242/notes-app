@@ -16,7 +16,7 @@ export const createNote = asyncHandler(async (req: Request, res: Response) => {
     return res.status(401).json(createErrorResponse("Unauthorized"));
   }
 
-  // Extract JWT token from auth he
+  // Extraire le token JWT de l'authentification
   const authHeader = req.headers.authorization;
   const authToken = authHeader?.startsWith("Bearer ")
     ? authHeader.slice(7)
@@ -26,7 +26,7 @@ export const createNote = asyncHandler(async (req: Request, res: Response) => {
 
   return res
     .status(201)
-    .json(createSuccessResponse(note, "Note created successfully"));
+    .json(createSuccessResponse(note, "Note créée avec succès"));
 });
 
 export const getNotes = asyncHandler(async (req: Request, res: Response) => {
@@ -44,7 +44,7 @@ export const getNotes = asyncHandler(async (req: Request, res: Response) => {
 
   return res
     .status(200)
-    .json(createSuccessResponse(result, "Notes retrieved successfully"));
+    .json(createSuccessResponse(result, "Notes récupérées avec succès"));
 });
 
 export const getNoteById = asyncHandler(async (req: Request, res: Response) => {
@@ -59,5 +59,5 @@ export const getNoteById = asyncHandler(async (req: Request, res: Response) => {
 
   return res
     .status(200)
-    .json(createSuccessResponse(note, "Note retrieved successfully"));
+    .json(createSuccessResponse(note, "Note récupérée avec succès"));
 });

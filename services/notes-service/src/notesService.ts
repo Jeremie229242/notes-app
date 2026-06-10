@@ -14,11 +14,11 @@ export class NotesService {
     noteData: CreateNoteRequest,
     authToken?: string
   ): Promise<Note> {
-    // sanitize input data
+    // assainir les données d'entrée
     const sanitizedTitl = sanitizeInput(noteData.title);
     const sanitizedContent = sanitizeInput(noteData.content);
 
-    //Create note
+    //Creer note
     const note = await prisma.note.create({
       data: {
         userId,
@@ -32,13 +32,13 @@ export class NotesService {
 
     //TODO: add tags to note if provided
     if (noteData.tagIds && note.noteTags.length === 0) {
-      // Validate tags exists and belongs to user
+      // Vérifier que les tags existent et appartiennent à l'utilisateur
       if (authToken) {
         await this.tagsServiceClient.validateTags(noteData.tagIds, authToken);
       }
       await this.addTagsToNote(note.id, noteData.tagIds);
 
-      // fetch the note again with tags
+      // Récupérez à nouveau la note avec les tags
       return this.getNoteById(note.id, userId);
     }
 
@@ -58,7 +58,7 @@ export class NotesService {
     });
 
     if (!note) {
-      throw createServiceError("Note not found", 404);
+      throw createServiceError("Note non trouvé", 404);
     }
 
     return note as Note;
@@ -77,13 +77,13 @@ export class NotesService {
   }> {
     const skip = (page - 1) * limit;
 
-    // build where clause
+    // build ou clause
     const whereClause: any = {
       userId,
       isDeleted: false,
     };
 
-    // add search functionality
+    // ajout d'une fonction de recherche
     if (search) {
       const sanitizedSearch = sanitizeInput(search);
       whereClause.OR = [
@@ -135,7 +135,7 @@ export class NotesService {
 
     await prisma.noteTag.createMany({
       data: noteTagData,
-      skipDuplicates: true, // avoid errors if tag is already associated
+      skipDuplicates: true, // éviter les erreurs si l'étiquette est déjà associée
     });
   }
 

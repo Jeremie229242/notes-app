@@ -1,6 +1,6 @@
 import { AuthService } from "../src/authService";
 
-// Mock external dependencies
+// Simuler les dépendances externes
 jest.mock("bcryptjs", () => ({
   hash: jest.fn(),
   compare: jest.fn(),
@@ -31,7 +31,7 @@ const mockedUuidv4 = uuidv4 as unknown as jest.Mock<string, []>;
 const mockedBcrypt = bcrypt as jest.Mocked<typeof bcrypt>;
 const mockedJwt = jwt as jest.Mocked<typeof jwt>;
 
-// Helper function to test ServiceError
+// Fonction auxiliaire pour tester ServiceError
 async function expectServiceError(
   asyncFn: () => Promise<any>,
   expectedMessage: string,
@@ -39,7 +39,7 @@ async function expectServiceError(
 ) {
   try {
     await asyncFn();
-    fail("Expected function to throw ServiceError");
+    fail("Fonction attendue pour lever une erreur de service");
   } catch (error) {
     expect(error).toBeInstanceOf(ServiceError);
     expect(error.message).toBe(expectedMessage);
@@ -54,7 +54,7 @@ describe("AuthService", () => {
     resetAllMocks();
     authService = new AuthService();
 
-    // setup default mock implementations
+    // setup par defaut mock implementations
     mockedUuidv4.mockReturnValue("test-uuid");
     (mockedBcrypt.hash as jest.Mock).mockResolvedValue("hashed-password");
     (mockedBcrypt.compare as jest.Mock).mockResolvedValue(true);
@@ -63,25 +63,25 @@ describe("AuthService", () => {
   });
 
   describe("constructor", () => {
-    it("should initialize with environment variables", () => {
+    it("devrait s'initialiser avec des variables d'environnement", () => {
       expect(authService).toBeInstanceOf(AuthService);
     });
 
-    it("should throw an error if JWT_SECRET is not configured", () => {
+    it("devrait générer une erreur si JWT_SECRET n'est pas configuré", () => {
       delete process.env.JWT_SECRET;
       expect(() => new AuthService()).toThrow(
-        "JWT secrets are not defined in environment variables"
+        "Les JWT secrets ne sont pas définis dans les variables d'environnement."
       );
-      process.env.JWT_SECRET = "test-jwt-secret-key-for-testing-only"; // Reset for other tests
+      process.env.JWT_SECRET = "test-jwt-secret-key"; // Réinitialiser pour d'autres tests
     });
 
-    it("should throw an error if JWT_REFRESH_SECRET is not configured", () => {
+    it("devrait générer une erreur si JWT_REFRESH_SECRET n'est pas configurer", () => {
       delete process.env.JWT_REFRESH_SECRET;
       expect(() => new AuthService()).toThrow(
-        "JWT secrets are not defined in environment variables"
+        "JWT secrets ne sont pas définies dans les variables d'environnement"
       );
       process.env.JWT_REFRESH_SECRET =
-        "test-jwt-refresh-secret-key-for-testing-only";
+        "test-jwt-refresh-secret-key";
     });
   });
 
@@ -89,7 +89,7 @@ describe("AuthService", () => {
     const email = "sigmmmmma@user.com";
     const password = "testpassword";
 
-    it("should successfully register a new user", async () => {
+    it("devrait réussir l'enregistrement d'un nouvel utilisateur", async () => {
       // setup mocks
       global.mockPrisma.user.findUnique.mockResolvedValue(null);
       global.mockPrisma.user.create.mockResolvedValue(testUser);
@@ -113,23 +113,23 @@ describe("AuthService", () => {
       });
     });
 
-    it("should throw an error if user already exists", async () => {
+    it("devrait générer une erreur si l'utilisateur existe déjà.", async () => {
       global.mockPrisma.user.findUnique.mockResolvedValue(testUser);
 
       await expectServiceError(
         () => authService.register(email, password),
-        "User already exists",
+        "Utilisateur existe deja",
         409
       );
 
       expect(global.mockPrisma.user.create).not.toHaveBeenCalled();
     });
 
-    it("should handle database errors during creation", async () => {
+    it("devrait gérer les erreurs de base de données lors de la création", async () => {
         global.mockPrisma.user.findUnique.mockResolvedValue(null);
-        global.mockPrisma.user.create.mockRejectedValue(new Error("DB Error"));
+        global.mockPrisma.user.create.mockRejectedValue(new Error("Erreur de base de données"));
     
-        await expect(authService.register(email, password)).rejects.toThrow("DB Error");
+        await expect(authService.register(email, password)).rejects.toThrow("Erreur de base de données");
     })
   });
 });

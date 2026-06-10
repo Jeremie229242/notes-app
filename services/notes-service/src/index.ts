@@ -9,7 +9,7 @@ import {
   healthCheck,
 } from "../../../partage/middleware";
 
-//load environment variables
+//Rechargement des variables d'environment 
 dotenv.config();
 
 const app = express();
@@ -27,11 +27,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/notes", notesRoutes);
 app.get("/health", healthCheck);
 
-// Error handling middleware
+// Middleware de gestion des erreurs
 app.use(errorHandler);
 
 app.listen(PORT, () => {
-  console.log(`User service is running on port ${PORT}`);
+  console.log(`Le service utilisateur est en cours d'exécution sur le port ${PORT}`);
   console.log(`Environment: ${process.env.NODE_ENV}`);
   console.log(`Health check: http://localhost:${PORT}/health`);
 });

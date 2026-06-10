@@ -40,7 +40,7 @@ export class TagsServiceClient {
       );
 
       if (!response.data.success) {
-        throw createServiceError("Tag validation failed", 400);
+        throw createServiceError("Tag validation a échoué.", 400);
       }
 
       return response.data.data;
@@ -48,14 +48,14 @@ export class TagsServiceClient {
       if (error.response) {
         // tags service retruned an eror
         const statusCode = error.response?.status || 500;
-        const message = error.response?.data?.error || "Tag validation failed";
+        const message = error.response?.data?.error || "Tag validation a echoué";
         throw createServiceError(message, statusCode);
       } else if (error.request) {
         // Tags service did not respond
-        throw createServiceError("Tags service is unavailable", 503);
+        throw createServiceError("Tags service est indisponible", 503);
       } else {
         // Something else happened
-        throw createServiceError("An unexpected error occurred", 500);
+        throw createServiceError("Une erreur inattendue s'est produite.", 500);
       }
     }
   }
@@ -75,7 +75,7 @@ export class TagsServiceClient {
     const validation = await this.validateTags(tags, authToken);
 
     if (validation.invalidTagIds.length > 0) {
-      throw createServiceError("Invalid tag ids", 400);
+      throw createServiceError("Invalide id tag", 400);
     }
 
     return validation.validTags;
