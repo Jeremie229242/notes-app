@@ -6,13 +6,13 @@ import proxyRoutes from "./routes/proxy";
 import { gatewayAuth } from "./middleware/auth";
 import { createErrorResponse } from "../../partage/utils";
 
-//load environment variables
+//charger les variables d'environnement
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 8080;
 
-// trust proxy (important for reverse proxies)
+// proxy de confiance (important pour les proxys inverses)
 app.set("trust proxy", 1);
 
 // setup middlewares
@@ -68,14 +68,14 @@ app.use(
   }
 );
 
-// Start server
+// Demarrer le server
 const server = app.listen(PORT, () => {
-  console.log(`🚀 API Gateway running on port ${PORT}`);
+  console.log(`🚀 API Gateway en cour d'execution ${PORT}`);
   console.log(`📊 Environment: ${process.env.NODE_ENV}`);
   console.log(`🔗 Gateway URL: http://localhost:${PORT}`);
   console.log(`❤️  Health check: http://localhost:${PORT}/health`);
   console.log("");
-  console.log("📋 Available endpoints:");
+  console.log("📋  endpoints disponibles:");
   console.log(`   Auth Service:  http://localhost:${PORT}/api/auth/*`);
   console.log(`   User Service:  http://localhost:${PORT}/api/users/*`);
   console.log(`   Notes Service: http://localhost:${PORT}/api/notes/*`);
@@ -83,19 +83,19 @@ const server = app.listen(PORT, () => {
   console.log("");
 });
 
-// Graceful shutdown
+// Arrêt en douceur du server
 process.on("SIGINT", () => {
-  console.log("🚦 Shutting down API Gateway...");
+  console.log("🚦 arret du API Gateway...");
   server.close(() => {
-    console.log("✅ API Gateway shut down gracefully.");
+    console.log("✅ API Gateway s'est arreter en douceur.");
     process.exit(0);
   });
 });
 
 process.on("SIGTERM", () => {
-  console.log("🚦 Shutting down API Gateway...");
+  console.log("🚦 Arret du API Gateway...");
   server.close(() => {
-    console.log("✅ API Gateway shut down gracefully.");
+    console.log("✅ API Gateway s'est arreter en douceur.");
     process.exit(0);
   });
 });

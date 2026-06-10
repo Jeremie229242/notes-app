@@ -1,4 +1,4 @@
-//typer pour tous les mivro services
+//types pour tous les mivro services
 
 export interface User{
     id: string;
@@ -96,8 +96,8 @@ export interface UserProfile {
 export interface JWTPayload {
   userId: string;
   email: string;
-  iat: number; // issued at
-  exp: number; // expiration time
+  iat: number; // émis à
+  exp: number; // temp d'expiration 
 }
 
 export class ServiceError extends Error {
@@ -120,7 +120,7 @@ export class ServiceError extends Error {
 }
 
 export function logError(error: Error, context?: Record<string, any>): void {
-  console.error("Error occurred", {
+  console.error("Une erreur s'est produite.", {
     message: error.message,
     stack: error.stack,
     context,

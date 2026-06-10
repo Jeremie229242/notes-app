@@ -3,7 +3,7 @@ import { JWTPayload, logError, ServiceError } from "../types";
 import { createErrorResponse } from "../utils";
 import jwt from "jsonwebtoken";
 
-// extends express request interface to include custom properties
+// étend l'interface de requête express pour inclure des propriétés personnalisées
 declare global {
   namespace Express {
     interface Request {
@@ -21,21 +21,21 @@ export function authenticateToken (
   const token = authHeader && authHeader.split(" ")[1]; // Bearer token
 
   if (!token) {
-    return res.status(401).json(createErrorResponse("Access token required"));
+    return res.status(401).json(createErrorResponse("Jeton d'accès requis"));
   }
 
   const jwtSecret = process.env.JWT_SECRET;
   if (!jwtSecret) {
-    logError(new Error("JWT_SECRET is not defined"));
-    return res.status(500).json(createErrorResponse("Internal Server Error"));
+    logError(new Error("JWT_SECRET non definis"));
+    return res.status(500).json(createErrorResponse("Erreur interne du serveur"));
   }
 
   jwt.verify(token, jwtSecret, (err: any, decoded: any) => {
     if (err) {
-      return res.status(403).json(createErrorResponse("Invalid token"));
+      return res.status(403).json(createErrorResponse("Invalide token"));
     }
 
-    req.user = decoded as JWTPayload; // Attach user info to request
+    req.user = decoded as JWTPayload; // Joindre les informations de l'utilisateur à la demande
     next();
   });
 }
@@ -64,7 +64,7 @@ export function validateRequest(schema: any) {
 
       return res.status(400).json({
         success: false,
-        message: "Validation error",
+        message: "erreur de Validation",
         errors,
       });
     }
@@ -88,7 +88,7 @@ export function errorHandler(
   });
 
   const statusCode = error.statusCode || 500;
-  const message = error.message || "Internal Server Error";
+  const message = error.message || " Erreur interne du server";
 
   res.status(statusCode).json(createErrorResponse(message));
 

@@ -34,11 +34,11 @@ export function createServiceError(
   return new ServiceError(message, statusCode, code, details);
 }
 
-// Sanitize user input data to prevent XSS and other attacks
+// Nettoyez les données saisies par l'utilisateur pour prévenir les attaques XSS et autres attaques.
 export function sanitizeInput(input: string): string {
   return input
-    .replace(/[<>]/g, "") // remove < and > characters
-    .trim(); // trim whitespace
+    .replace(/[<>]/g, "") // supprimer < et > caracters
+    .trim(); // supprimer les espaces
 }
 
 export function isValidUUID(uuid: string): boolean {

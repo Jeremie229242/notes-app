@@ -19,24 +19,24 @@ function createServiceProxy(
       if (!res.headersSent) {
         res.status(503).json({
           success: false,
-          error: "Service unavailable. Please try again later.",
-          message: "Service unavailable. Please try again later.",
+          error: "Service indisponible. Veuillez réessayer plus tard..",
+          message: "Service indisponible. Veuillez réessayer plus tard..",
         });
       }
     },
     onProxyReq: (proxyReq: any, req: any) => {
-      // Log proxy request details
+      // Journaliser les détails de la requête proxy
       console.log(
         `Proxying request: ${req.method} ${req.originalUrl} to ${targetUrl}`
       );
 
-      // Forward user information if available
+      // Transmettre les informations utilisateur si disponibles
       if (req.user) {
         proxyReq.setHeader("x-user-id", req.user.userId);
         proxyReq.setHeader("x-user-email", req.user.email);
       }
 
-      // Ensure content type for POST/PUT requests
+      // Assurez-vous que le type de contenu des requêtes POST/PUT est correct.
       if (
         req.body &&
         (req.method === "POST" ||
@@ -50,7 +50,7 @@ function createServiceProxy(
       }
     },
     onProxyRes: (proxyRes: any, req: any) => {
-      // log proxy response details
+      // Détails de la réponse du proxy de journalisation
       console.log(
         `Received response from ${targetUrl}: ${proxyRes.statusCode} for ${req.method} ${req.originalUrl}`
       );
@@ -63,28 +63,28 @@ function createServiceProxy(
 router.use(
   "/api/auth",
   createServiceProxy(servicesConfig.auth.url, {
-    "^/api/auth": "/auth", // Rewrite path to match service endpoint
+    "^/api/auth": "/auth", // Réécrire le chemin pour qu'il corresponde au point de terminaison du service
   })
 );
 
 router.use(
   "/api/users",
   createServiceProxy(servicesConfig.users.url, {
-    "^/api/users": "/users", // Rewrite path to match service endpoint
+    "^/api/users": "/users", // Réécrire le chemin pour qu'il corresponde au point de terminaison du service
   })
 );
 
 router.use(
   "/api/notes",
   createServiceProxy(servicesConfig.notes.url, {
-    "^/api/notes": "/notes", // Rewrite path to match service endpoint
+    "^/api/notes": "/notes", // Réécrire le chemin pour qu'il corresponde au point de terminaison du service
   })
 );
 
 router.use(
   "/api/tags",
   createServiceProxy(servicesConfig.tags.url, {
-    "^/api/tags": "/tags", // Rewrite path to match service endpoint
+    "^/api/tags": "/tags", // Réécrire le chemin pour qu'il corresponde au point de terminaison du service
   })
 );
 
