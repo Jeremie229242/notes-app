@@ -14,19 +14,19 @@ export class UserService {
     userId: string,
     profileData: Partial<UpdateProfileRequest>
   ): Promise<UserProfile> {
-    // check if profile already exists
+    // check si le profile  existe deja
     const existingProfile = await prisma.userProfile.findUnique({
       where: { userId },
     });
 
     if (existingProfile) {
-      throw createServiceError("User profile already exists", 409);
+      throw createServiceError("Utilisateur profile existe deja", 409);
     }
 
-    // sanitize input data
+    // assainir les données d'entrée
     const sanitizedData = this.sanitizeProfileData(profileData);
 
-    // create new profile
+    // creer nouvel profile
     const profile = await prisma.userProfile.create({
       data: {
         userId,
@@ -43,7 +43,7 @@ export class UserService {
     });
 
     if (!profile) {
-      throw createServiceError("User profile not found", 404);
+      throw createServiceError("Utilisateur profile non trouvé", 404);
     }
 
     return profile;
@@ -53,20 +53,20 @@ export class UserService {
     userId: string,
     profileData: Partial<UpdateProfileRequest>
   ): Promise<UserProfile> {
-    // check if profile exists
+    // check si le profile existe
     const existingProfile = await prisma.userProfile.findUnique({
       where: { userId },
     });
 
     if (!existingProfile) {
-      // if no profile exists, create one
+      // si profile n'existe pas, crés en un
       return this.createProfile(userId, profileData);
     }
 
-    // sanitize input data
+    // assainir les données d'entrée
     const sanitizedData = this.sanitizeProfileData(profileData);
 
-    // update existing profile
+    // mettre à jour le profil existant
     const updatedProfile = await prisma.userProfile.update({
       where: { userId },
       data: sanitizedData,
@@ -81,7 +81,7 @@ export class UserService {
     });
 
     if (!profile) {
-      throw createServiceError("User profile not found", 404);
+      throw createServiceError(" profile utilisateur non trouvé", 404);
     }
 
     await prisma.userProfile.delete({

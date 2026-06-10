@@ -39,8 +39,8 @@ beforeEach(() => {
 export const testNote = {
   id: "test-note-id-123",
   userId: "test-user-id-123",
-  title: "Test Note Title",
-  content: "This is test note content",
+  title: "Test Note Titre",
+  content: "ceci est test note content",
   isDeleted: false,
   createdAt: new Date("2024-01-01T00:00:00.000Z"),
   updatedAt: new Date("2024-01-01T00:00:00.000Z"),
@@ -48,17 +48,17 @@ export const testNote = {
 };
 
 export const testCreateNoteRequest = {
-  title: "New Test Note",
-  content: "This is new test note content",
+  title: "Nouvel Test Note",
+  content: "ceci est un nouveau test note content",
   tagIds: ["tag-id-1", "tag-id-2"],
 };
 
 export const testUpdateNoteRequest = {
-  title: "Updated Test Note",
-  content: "This is updated test note content",
+  title: "Modifier Test Note",
+  content: "Ceci est une modification test note content",
 };
 
-// helper function to reset mocks before each test
+// fonction auxiliaire pour réinitialiser les mocks avant chaque test
 export function resetAllMocks() {
   Object.values(mockPrismaClient.note).forEach((mock) => {
     if (jest.isMockFunction(mock)) {

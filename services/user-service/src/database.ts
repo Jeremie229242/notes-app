@@ -1,12 +1,12 @@
 import { PrismaClient } from "@prisma/client";
 
 
-// create a single instance of PrismaClient
+// créer une seule instance de PrismaClient
 const prisma = new PrismaClient({
     log: process.env.NODE_ENV === "development" ? ["query", "info", "warn", "error"] : ["error"],
 })
 
-// handle graceful shutdown
+// Gérer l'arrêt en douceur
 process.on("beforeExit", async () => {
     await prisma.$disconnect();
 });

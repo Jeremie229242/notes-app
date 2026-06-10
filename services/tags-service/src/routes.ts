@@ -5,7 +5,7 @@ import { createTagSchema, validateTagsSchema } from "./validation";
 
 const router = Router();
 
-// All routes require authentication
+// Tous les routes nécessitent une authentification.
 router.use(authenticateToken);
 
 // Tags CRUD Operations

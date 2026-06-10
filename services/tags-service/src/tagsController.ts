@@ -19,7 +19,7 @@ export const createTag = asyncHandler(async (req: Request, res: Response) => {
 
   return res
     .status(201)
-    .json(createSuccessResponse(tag, "Tag created successfully"));
+    .json(createSuccessResponse(tag, "Tag créé avec succès"));
 });
 
 export const getTags = asyncHandler(async (req: Request, res: Response) => {
@@ -46,7 +46,7 @@ export const getTags = asyncHandler(async (req: Request, res: Response) => {
           totalPages: result.totalPages,
         },
       },
-      "Tags retrieved successfully"
+      "Tags récupéré avec succès"
     )
   );
 });
@@ -63,7 +63,7 @@ export const getTagById = asyncHandler(async (req: Request, res: Response) => {
 
   return res
     .status(200)
-    .json(createSuccessResponse(tag, "Tag retrieved successfully"));
+    .json(createSuccessResponse(tag, "Tag récupéré avec succès"));
 });
 
 export const validateTags = asyncHandler(
@@ -80,6 +80,6 @@ export const validateTags = asyncHandler(
 
     return res
       .status(200)
-      .json(createSuccessResponse(result, "Tags validated successfully"));
+      .json(createSuccessResponse(result, "Tags valider avec success"));
   }
 );

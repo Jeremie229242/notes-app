@@ -25,7 +25,7 @@ export class AuthClient {
 
       if (!response.data.success || !response.data.data) {
         throw createServiceError(
-          "Invalid token response from auth service",
+          "Réponse de token invalide du service d'authentification",
           401
         );
       }
@@ -33,12 +33,12 @@ export class AuthClient {
       return response.data.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        throw createServiceError("Invalid or expired token", 401);
+        throw createServiceError(" token expiré ou in valide", 401);
       }
       if (error.code === "ECONNRREFUSED") {
-        throw createServiceError("Auth service is unavailable", 503);
+        throw createServiceError("Le service d'authentification est indisponible.", 503);
       }
-      throw createServiceError("An unexpected error occurred", 500);
+      throw createServiceError("Une erreur inattendue s'est produite.", 500);
     }
   }
 }

@@ -18,10 +18,10 @@ const mockPrismaClient = {
   $connect: jest.fn(),
 };
 
-// Mock the database module
+// la base de donnée de Mock module
 jest.mock("../src/database", () => mockPrismaClient);
 
-// Mock axios for Authclient
+// Mock axios pour Authclient
 jest.mock("axios");
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
@@ -29,18 +29,18 @@ const mockedAxios = axios as jest.Mocked<typeof axios>;
 global.mockPrisma = mockPrismaClient;
 global.mockAxios = mockedAxios;
 
-// Reset all mocks before each test
+// Réinitialisez tous les mocks avant chaque test
 beforeEach(() => {
   jest.clearAllMocks();
 });
 
-// global data for test
+// base de donnée global pour test
 export const testUserProfile = {
   id: "test-user-id-123",
   userId: "test-user-id",
   firstName: "Test",
   lastName: "User",
-  bio: "This is a test user profile.",
+  bio: "Ceci est un  test user profile.",
   avatarUrl: "http://example.com/avatar.jpg",
   preferences: { theme: "dark", notifications: true },
   createdAt: new Date("2025-07-01T00:00:00Z"),
@@ -50,7 +50,7 @@ export const testUserProfile = {
 export const testUpdateProfileRequest = {
   firstName: "Updated",
   lastName: "User",
-  bio: "This is an updated test user profile.",
+  bio: "Ceci est une mise a jour test  profile d'utilisateur.",
   avatarUrl: "http://example.com/updated-avatar.jpg",
   preferences: { theme: "light", notifications: false },
 };
@@ -59,10 +59,10 @@ export const testJwtPayload = {
   userId: "test-user-id",
   email: "test@example.com",
   iat: Math.floor(Date.now() / 1000),
-  exp: Math.floor(Date.now() / 1000) + 60 * 15, // 15 minutes from now
+  exp: Math.floor(Date.now() / 1000) + 60 * 15, // 15 minutes avant expiration
 };
 
-// helper function to reset mocks before each test
+// fonction auxiliaire pour réinitialiser les mocks avant chaque test
 export function resetAllMocks() {
   Object.values(mockPrismaClient.userProfile).forEach((mock) => {
     if (jest.isMockFunction(mock)) {

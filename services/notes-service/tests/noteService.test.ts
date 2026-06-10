@@ -9,7 +9,7 @@ async function expectServiceError(
 ) {
   try {
     await asyncFn();
-    fail("Expected function to throw ServiceError");
+    fail("Fonction attendue pour lever une erreur de service");
   } catch (error) {
     expect(error).toBeInstanceOf(ServiceError);
     expect(error.message).toBe(expectedMessage);
@@ -28,19 +28,19 @@ describe("NotesService", () => {
   describe("createNote", () => {
     const userId = "test-user-id-123";
 
-    it("should successfully create a note without tags", async () => {
+    it("devrait réussir à créer une note sans tags", async () => {
       global.mockPrisma.note.create.mockResolvedValue(testNote);
 
       const result = await notesService.createNote(userId, {
         title: "Test Note",
-        content: "This is a test note",
+        content: "ceci est test note",
       });
 
       expect(global.mockPrisma.note.create).toHaveBeenCalledWith({
         data: {
           userId,
           title: "Test Note",
-          content: "This is a test note",
+          content: "Ceci test note",
         },
         include: {
           noteTags: true,

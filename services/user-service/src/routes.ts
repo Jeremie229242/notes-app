@@ -5,7 +5,7 @@ import { updateProfileSchema } from "./validation";
 
 const router = Router();
 
-// Protected routes (requires authentication)
+// Routes protégées (nécessite une authentification)
 router.get("/profile", authenticateToken, userController.getProfile);
 router.put("/profile", authenticateToken, validateRequest(updateProfileSchema), userController.updateProfile);
 router.delete("/profile", authenticateToken, userController.deleteProfile);

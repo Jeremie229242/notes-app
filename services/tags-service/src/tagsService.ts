@@ -8,22 +8,22 @@ import {
   
   export class TagsService {
     async createTag(userId: string, tagData: CreateTagRequest): Promise<Tag> {
-      // Sanitize and validate the tag data
+      // Nettoyer et valider les données des tags
       const sanitizedName = sanitizeInput(tagData.name);
       const sanitizedColor = tagData.color
         ? sanitizeInput(tagData.color)
         : undefined;
   
-      // Validate color format if provided ( hex color format )
+      // Valider le format de couleur s'il est fourni (format de couleur hexadécimal).
       if (sanitizedColor && !this.isValidHexColor(sanitizedColor)) {
         throw createServiceError(
-          "Invalid color format, Use hex color format (eg: #FF5733 or #F73)",
+          "Format de couleur invalide, utilisez le format de couleur hexadécimal. (eg: #FF5733 or #F73)",
           400
         );
       }
   
       try {
-        // create tag
+        // creer tag
         const tag = await prisma.tag.create({
           data: {
             userId,
@@ -34,17 +34,17 @@ import {
   
         return tag as Tag;
       } catch (error) {
-        // handle unique constaraint violation error
+        // gérer l'erreur de violation de contrainte d'unicité
         if (error.code === "P2002") {
-          throw createServiceError("Tag name already exists", 409);
+          throw createServiceError("Ce Tag existe deja", 409);
         }
-        throw createServiceError("Failed to create tag", 500);
+        throw createServiceError("Erreur de création de tag", 500);
       }
     }
   
     async getTagById(tagId: string, userId: string): Promise<Tag> {
       if (!isValidUUID(tagId)) {
-        throw createServiceError("Invalid tag id", 400);
+        throw createServiceError("Invalide tag id", 400);
       }
   
       const tag = await prisma.tag.findFirst({
@@ -55,7 +55,7 @@ import {
       });
   
       if (!tag) {
-        throw createServiceError("Tag not found", 404);
+        throw createServiceError("Tag non trouvé", 404);
       }
   
       return tag as Tag;
@@ -74,7 +74,7 @@ import {
     }> {
       const skip = (page - 1) * limit;
   
-      // build where clause
+      // build par clause
       const whereClause: any = {
         userId,
       };
@@ -93,7 +93,7 @@ import {
           where: whereClause,
           skip,
           take: limit,
-          orderBy: { name: "asc" }, // sorct tags alphebetically
+          orderBy: { name: "asc" }, // Ordre tags alphebetique
         }),
         prisma.tag.count({
           where: whereClause,
