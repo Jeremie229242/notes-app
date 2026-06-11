@@ -15,4 +15,5 @@ services/notes-service/node_modules
 services/notes-service/.env
 services/tags-service/node_modules
 services/tags-service/.env
+services/seach-service/.env
 
