@@ -21,10 +21,9 @@
     "joi": "^18.2.1"
   },
   "devDependencies": {
-    "@types/jest": "^30.0.0",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
     "@types/supertest": "^7.2.0",
-    "jest": "^30.4.2",
-    "supertest": "^7.2.2",
-    "ts-jest": "^29.4.11"
+    "supertest": "^7.2.2"
   }
 }
