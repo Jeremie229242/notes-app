@@ -70,7 +70,7 @@ describe("AuthService", () => {
     it("devrait générer une erreur si JWT_SECRET n'est pas configuré", () => {
       delete process.env.JWT_SECRET;
       expect(() => new AuthService()).toThrow(
-        "Les JWT secrets ne sont pas définis dans les variables d'environnement."
+        "Les JWT secrets ne sont pas définies dans les variables d'environnement"
       );
       process.env.JWT_SECRET = "test-jwt-secret-key"; // Réinitialiser pour d'autres tests
     });
@@ -78,7 +78,7 @@ describe("AuthService", () => {
     it("devrait générer une erreur si JWT_REFRESH_SECRET n'est pas configurer", () => {
       delete process.env.JWT_REFRESH_SECRET;
       expect(() => new AuthService()).toThrow(
-        "JWT secrets ne sont pas définies dans les variables d'environnement"
+        "Les JWT secrets ne sont pas définies dans les variables d'environnement"
       );
       process.env.JWT_REFRESH_SECRET =
         "test-jwt-refresh-secret-key";
@@ -113,7 +113,7 @@ describe("AuthService", () => {
       });
     });
 
-    it("devrait générer une erreur si l'utilisateur existe déjà.", async () => {
+    it("devrait générer une erreur si l'utilisateur existe déjà", async () => {
       global.mockPrisma.user.findUnique.mockResolvedValue(testUser);
 
       await expectServiceError(

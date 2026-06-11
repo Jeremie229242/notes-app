@@ -53,7 +53,7 @@ describe("UserService", () => {
     const profileData = {
       firstName: "Test",
       lastName: "User",
-      bio: "Ceci est un test profile d'utlisateur.",
+      bio: "Ceci est un test profile d'utilisateur.",
       avatarUrl: "http://example.com/avatar.jpg",
       preferences: { theme: "dark", notifications: true },
     };
@@ -108,7 +108,7 @@ describe("UserService", () => {
           userId,
           firstName: "scriptalert('xss')/scriptTest",
           lastName: "User",
-          bio: "ceci est un  test user profile d'utlisateur.",
+          bio: "ceci est un test profile d'utilisateur.",
           avatarUrl: "http://example.com/avatar.jpg",
           preferences: { theme: "dark", notifications: true },
         },

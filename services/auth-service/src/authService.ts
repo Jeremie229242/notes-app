@@ -20,7 +20,7 @@ export class AuthService {
     this.bcryptRounds = parseInt(process.env.BCRYPT_ROUNDS || "10", 10);
 
     if (!this.jwtSecret || !this.jwtRefreshSecret) {
-      throw new Error(" Les JWT secrets ne sont pas définis dans les variables d'environnement");
+      throw new Error(" Les JWT secrets ne sont pas définies dans les variables d'environnement");
     }
   }
 

@@ -33,14 +33,14 @@ describe("NotesService", () => {
 
       const result = await notesService.createNote(userId, {
         title: "Test Note",
-        content: "ceci est test note",
+        content: "Ceci est test note",
       });
 
       expect(global.mockPrisma.note.create).toHaveBeenCalledWith({
         data: {
           userId,
           title: "Test Note",
-          content: "Ceci test note",
+          content: "Ceci est test note",
         },
         include: {
           noteTags: true,
@@ -54,7 +54,7 @@ describe("NotesService", () => {
     const noteId = "test-note-id-123";
     const userId = "test-user-id-123";
 
-    it("should successfully retrieve a note", async () => {
+    it("devrait récupérer une note avec succès", async () => {
       global.mockPrisma.note.findFirst.mockResolvedValue(testNote);
 
       const result = await notesService.getNoteById(noteId, userId);

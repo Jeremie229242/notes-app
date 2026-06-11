@@ -20,7 +20,7 @@ export class UserService {
     });
 
     if (existingProfile) {
-      throw createServiceError("Utilisateur profile existe deja", 409);
+      throw createServiceError("Le profil utilisateur existe déjà.", 409);
     }
 
     // assainir les données d'entrée
@@ -43,7 +43,7 @@ export class UserService {
     });
 
     if (!profile) {
-      throw createServiceError("Utilisateur profile non trouvé", 404);
+      throw createServiceError("Profil utilisateur introuvable", 404);
     }
 
     return profile;
@@ -81,7 +81,7 @@ export class UserService {
     });
 
     if (!profile) {
-      throw createServiceError(" profile utilisateur non trouvé", 404);
+      throw createServiceError("Profil utilisateur introuvable", 404);
     }
 
     await prisma.userProfile.delete({
