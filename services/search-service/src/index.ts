@@ -26,11 +26,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/search", searchRoutes);
 app.get("/health", healthCheck);
 
-// Error handling middleware
+// Middleware de gestion des erreurs
 app.use(errorHandler);
 
 const server = app.listen(PORT, async () => {
-  console.log(`🔍 Search service is running on port ${PORT}`);
+  console.log(`🔍 Le service de recherche est en cours d'exécution sur le port ${PORT}`);
   console.log(`📊 Environment: ${process.env.NODE_ENV}`);
   console.log(`❤️  Health check: http://localhost:${PORT}/health`);
   console.log(`🔗 Search API: http://localhost:${PORT}/search`);
@@ -39,9 +39,9 @@ const server = app.listen(PORT, async () => {
   // Initialize Elasticsearch
   try {
     await initializeElasticsearch();
-    console.log("✅ Elasticsearch initialized");
+    console.log("✅ Elasticsearch initialiser");
   } catch (error) {
-    console.error("❌ Failed to initialize Elasticsearch:", error);
+    console.error("❌ Échec de l'initialisation d'Elasticsearch:", error);
   }
 
  
@@ -49,12 +49,12 @@ const server = app.listen(PORT, async () => {
 
 // Graceful shutdown
 const gracefulShutdown = async () => {
-  console.log("🚦 Shutting down Search Service...");
+  console.log("🚦 Arrêt du service de recherche...");
 
   
 
   server.close(() => {
-    console.log("✅ Search Service shut down gracefully");
+    console.log("✅ Le service de recherche s'est arrêté correctement.");
     process.exit(0);
   });
 };

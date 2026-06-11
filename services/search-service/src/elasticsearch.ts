@@ -3,7 +3,7 @@ import { Client } from "@elastic/elasticsearch";
 let esClient: Client | null = null;
 
 const ELASTICSEARCH_URL = process.env.ELASTICSEARCH_URL || "http://localhost:9200";
-const INDEX_PREFIX = process.env.ELASTICSEARCH_INDEX_PREFIX || "notesverb";
+const INDEX_PREFIX = process.env.ELASTICSEARCH_INDEX_PREFIX || "notesapp";
 
 // Index names
 export const INDICES = {
@@ -33,18 +33,18 @@ export async function initializeElasticsearch(): Promise<void> {
   const client = getElasticsearchClient();
 
   try {
-    // Check if Elasticsearch is available
+    // Check si Elasticsearch est disponible
     await client.ping();
-    console.log("✅ Connected to Elasticsearch");
+    console.log("✅ Connecter a Elasticsearch");
 
-    // Create notes index if it doesn't exist
+    // Créer un index des notes s'il n'existe pas.
     await createNotesIndex();
     
-    // Create search analytics index if it doesn't exist
+    // Créer un index d'analyse de recherche s'il n'existe pas.
     await createSearchAnalyticsIndex();
 
   } catch (error) {
-    console.error("❌ Failed to connect to Elasticsearch:", error);
+    console.error("❌ Erreur de connection a Elasticsearch:", error);
     throw error;
   }
 }
@@ -98,12 +98,12 @@ async function createNotesIndex(): Promise<void> {
           }
         }
       });
-      console.log(`✅ Created index: ${INDICES.NOTES}`);
+      console.log(`✅ Créer index: ${INDICES.NOTES}`);
     } else {
-      console.log(`ℹ️  Index already exists: ${INDICES.NOTES}`);
+      console.log(`ℹ️  Index existe deja: ${INDICES.NOTES}`);
     }
   } catch (error) {
-    console.error(`❌ Failed to create notes index:`, error);
+    console.error(`❌ Erreur de creation de notes index:`, error);
     throw error;
   }
 }
@@ -134,12 +134,12 @@ async function createSearchAnalyticsIndex(): Promise<void> {
           }
         }
       });
-      console.log(`✅ Created index: ${INDICES.SEARCH_ANALYTICS}`);
+      console.log(`✅ Créer index: ${INDICES.SEARCH_ANALYTICS}`);
     } else {
-      console.log(`ℹ️  Index already exists: ${INDICES.SEARCH_ANALYTICS}`);
+      console.log(`ℹ️  Index existe deja: ${INDICES.SEARCH_ANALYTICS}`);
     }
   } catch (error) {
-    console.error(`❌ Failed to create search analytics index:`, error);
+    console.error(`❌ Échec de la création de l'index d'analyse de recherche:`, error);
     throw error;
   }
 }
@@ -148,6 +148,6 @@ export async function closeElasticsearchConnection(): Promise<void> {
   if (esClient) {
     await esClient.close();
     esClient = null;
-    console.log("✅ Elasticsearch connection closed");
+    console.log("✅ Elasticsearch connection fermer");
   }
 }

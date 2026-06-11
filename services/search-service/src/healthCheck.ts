@@ -17,7 +17,7 @@ export const healthCheck = async (
         error: null as string | null,
       },
       kafka: {
-        status: "unknown", // Could be enhanced to check Kafka connection
+        status: "unknown", // 
         error: null as string | null,
       },
     },
@@ -28,7 +28,7 @@ export const healthCheck = async (
     const startTime = Date.now();
     const client = getElasticsearchClient();
 
-    // Simple ping to check if Elasticsearch is available
+    // Simple ping pour check si Elasticsearch est disponible
     await client.ping();
 
     const responseTime = Date.now() - startTime;
@@ -47,8 +47,8 @@ export const healthCheck = async (
     healthStatus.status = "unhealthy";
   }
 
-  // Set Kafka status (simplified - could be enhanced)
-  healthStatus.checks.kafka.status = "healthy"; // Assume healthy for now
+  
+  healthStatus.checks.kafka.status = "healthy"; // Assume healthy 
 
   // Determine HTTP status code
   const httpStatus = healthStatus.status === "healthy" ? 200 : 503;

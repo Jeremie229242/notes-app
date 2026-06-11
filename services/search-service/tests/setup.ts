@@ -1,12 +1,13 @@
-// Test setup file
-// This file runs before all tests
+// Fichier de configuration des tests
 
-// Set test environment
+// Ce fichier s'exécute avant tous les tests
+
+// Configuration de l'environnement de test
 process.env.NODE_ENV = "test";
 process.env.ELASTICSEARCH_URL = "http://localhost:9200";
 process.env.ELASTICSEARCH_INDEX_PREFIX = "test_notesverb";
 
-// Mock console methods to reduce noise during tests
+// Méthodes de console simulée pour réduire le bruit pendant les tests
 const originalConsoleLog = console.log;
 const originalConsoleError = console.error;
 

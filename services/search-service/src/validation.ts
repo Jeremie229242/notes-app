@@ -9,7 +9,7 @@ export const searchSchema = Joi.object({
   size: Joi.number().integer().min(1).max(100).optional(),
   sortBy: Joi.string().valid("relevance", "created", "updated").optional(),
   sortOrder: Joi.string().valid("asc", "desc").optional(),
-  // Advanced search parameters
+  // Parametre de recherche avancer
   fuzzy: Joi.boolean().optional(),
   fuzziness: Joi.alternatives()
     .try(Joi.number().integer().min(0).max(2), Joi.string().valid("AUTO"))
@@ -21,7 +21,7 @@ export const searchSchema = Joi.object({
     .optional()
     .messages({
       "string.pattern.base":
-        "createdLast must be in format like '7d', '30d', '1y'",
+        "createdLast doit être au format suivant : '7d', '30d', '1y'",
     }),
   contentLength: Joi.string().valid("short", "medium", "long").optional(),
 });

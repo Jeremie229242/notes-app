@@ -27,12 +27,12 @@ describe("Search Service", () => {
   });
 
   describe("indexNote", () => {
-    it("should index a note successfully", async () => {
+    it("devrait indexer une note avec succès", async () => {
       const mockDocument: SearchDocument = {
         noteId: "note-123",
         userId: "user-123",
         title: "Test Note",
-        content: "This is a test note content",
+        content: "Ceci est un test note content",
         tags: ["test", "example"],
         isDeleted: false,
         createdAt: "2023-01-01T00:00:00Z",
@@ -45,19 +45,19 @@ describe("Search Service", () => {
       await indexNote(mockDocument);
 
       expect(mockElasticsearchClient.index).toHaveBeenCalledWith({
-        index: "notesverb_notes",
+        index: "notesapps_notes",
         id: "note-123",
         body: mockDocument,
         refresh: true,
       });
     });
 
-    it("should handle indexing errors", async () => {
+    it("devrait gérer les erreurs d'indexation", async () => {
       const mockDocument: SearchDocument = {
         noteId: "note-123",
         userId: "user-123",
         title: "Test Note",
-        content: "This is a test note content",
+        content: "Ceci est untest note content",
         tags: [],
         isDeleted: false,
         createdAt: "2023-01-01T00:00:00Z",
@@ -72,7 +72,7 @@ describe("Search Service", () => {
   });
 
   describe("searchNotes", () => {
-    it("should search notes successfully", async () => {
+    it("devrait rechercher les notes avec succès", async () => {
       const mockSearchResponse = {
         body: {
           hits: {
@@ -82,7 +82,7 @@ describe("Search Service", () => {
                 _source: {
                   noteId: "note-123",
                   title: "Test Note",
-                  content: "This is a test note content",
+                  content: "Ceci est un test note content",
                   tags: ["test"],
                   createdAt: "2023-01-01T00:00:00Z",
                   updatedAt: "2023-01-01T00:00:00Z",
@@ -90,7 +90,7 @@ describe("Search Service", () => {
                 _score: 1.5,
                 highlight: {
                   title: ["<mark>Test</mark> Note"],
-                  content: ["This is a <mark>test</mark> note content"],
+                  content: ["Ceci est un <mark>test</mark> note content"],
                 },
               },
             ],
@@ -118,14 +118,14 @@ describe("Search Service", () => {
           {
             noteId: "note-123",
             title: "Test Note",
-            content: "This is a test note content",
+            content: "Ceci est un test note content",
             tags: ["test"],
             createdAt: "2023-01-01T00:00:00Z",
             updatedAt: "2023-01-01T00:00:00Z",
             score: 1.5,
             highlights: {
               title: ["<mark>Test</mark> Note"],
-              content: ["This is a <mark>test</mark> note content"],
+              content: ["Ceci est un <mark>test</mark> note content"],
             },
           },
         ],
@@ -137,7 +137,7 @@ describe("Search Service", () => {
       });
 
       expect(mockElasticsearchClient.search).toHaveBeenCalledWith({
-        index: "notesverb_notes",
+        index: "notesapp_notes",
         body: expect.objectContaining({
           query: expect.objectContaining({
             bool: expect.objectContaining({
@@ -157,7 +157,7 @@ describe("Search Service", () => {
       });
     });
 
-    it("should handle search with tags filter", async () => {
+    it("devrait gérer la recherche avec filtre par tags", async () => {
       const mockSearchResponse = {
         body: {
           hits: {

@@ -8,7 +8,7 @@ import { searchSchema, searchSuggestionsSchema } from "./validation";
 
 const router = Router();
 
-// Test endpoint without authentication (for testing)
+// Endpoint de test sans authentification (pour les tests)
 router.get("/test", async (req, res) => {
   res.json({
     success: true,
@@ -19,7 +19,7 @@ router.get("/test", async (req, res) => {
   });
 });
 
-// Test search endpoint without authentication (for testing)
+// Testez le endpoint de recherche sans authentification (pour les tests)
 router.get("/test-search", async (req, res) => {
   try {
     const { searchNotes } = await import("./searchService");
@@ -49,10 +49,10 @@ router.get("/test-search", async (req, res) => {
   }
 });
 
-// All other routes require authentication
+// Tous les autres itinéraires nécessitent une authentification.
 router.use(authenticateToken);
 
-// Search routes
+// Recherche routes
 router.get("/", validateRequest(searchSchema), searchController.search);
 router.get(
   "/suggestions",

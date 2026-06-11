@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { searchNotes, SearchQuery } from "./searchService";
 
-// Extend Request type to include user from JWT middleware
+// Étendre le type de requête pour inclure l'utilisateur du middleware JWT
 interface AuthenticatedRequest extends Request {
   user?: {
     userId: string;
@@ -17,7 +17,7 @@ export const search = async (
     const userId = req.user?.userId;
 
     if (!userId) {
-      res.status(401).json({ error: "User not authenticated" });
+      res.status(401).json({ error: "Utilisateur non authentifié" });
       return;
     }
 
@@ -36,12 +36,12 @@ export const search = async (
       contentLength,
     } = req.query;
 
-    // Validate and parse parameters
+    // Valider et analyser les paramètres
     const pageNum = Math.max(1, parseInt(page as string) || 1);
-    const pageSize = Math.min(100, Math.max(1, parseInt(size as string) || 20)); // Max 100 results per page
+    const pageSize = Math.min(100, Math.max(1, parseInt(size as string) || 20)); // Max 100 resultats par page
     const from = (pageNum - 1) * pageSize;
 
-    // Parse tags if provided
+    // Analyser les tags si elles sont fournies
     let tagArray: string[] = [];
     if (tags) {
       if (Array.isArray(tags)) {
@@ -62,7 +62,7 @@ export const search = async (
       size: pageSize,
       sortBy: sortBy as "relevance" | "created" | "updated",
       sortOrder: sortOrder as "asc" | "desc",
-      // Advanced search parameters
+      // Parametre de recherche avancer
       fuzzy: fuzzy === "true" || fuzzy === true,
       fuzziness:
         fuzziness === "AUTO" ? "AUTO" : parseInt(fuzziness as string) || "AUTO",
@@ -82,7 +82,7 @@ export const search = async (
     console.error("Search error:", error);
     res.status(500).json({
       success: false,
-      error: "Internal server error during search",
+      error: "Erreur interne du serveur lors de la recherche",
     });
   }
 };
@@ -95,7 +95,7 @@ export const searchSuggestions = async (
     const userId = req.user?.userId;
 
     if (!userId) {
-      res.status(401).json({ error: "User not authenticated" });
+      res.status(401).json({ error: "Utilisateur non authentifié" });
       return;
     }
 
@@ -111,8 +111,9 @@ export const searchSuggestions = async (
       return;
     }
 
-    // For now, return simple suggestions based on search
-    // In the future, this could be enhanced with autocomplete functionality
+    // Pour l'instant, renvoyer des suggestions simples basées sur la recherche.
+
+// À l'avenir, cette fonctionnalité pourrait être améliorée avec la saisie semi-automatique.
     const searchQuery: SearchQuery = {
       query: query as string,
       userId,
@@ -136,10 +137,10 @@ export const searchSuggestions = async (
       },
     });
   } catch (error) {
-    console.error("Search suggestions error:", error);
+    console.error("Erreur dans les suggestions de recherche:", error);
     res.status(500).json({
       success: false,
-      error: "Internal server error during search suggestions",
+      error: "Erreur interne du serveur lors de la recherche de suggestions",
     });
   }
 };

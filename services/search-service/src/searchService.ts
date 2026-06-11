@@ -20,7 +20,7 @@ export interface SearchQuery {
   size?: number;
   sortBy?: "relevance" | "created" | "updated";
   sortOrder?: "asc" | "desc";
-  // Advanced search options
+  // Option de recherche Avancer
   fuzzy?: boolean;
   fuzziness?: number | "AUTO";
   dateFrom?: string;
@@ -60,7 +60,7 @@ export async function indexNote(document: SearchDocument): Promise<void> {
       index: INDICES.NOTES,
       id: document.noteId,
       body: document,
-      refresh: true, // Make immediately searchable
+      refresh: true, //
     });
   } catch (error) {
     console.error(`Failed to index note ${document.noteId}:`, error);
@@ -99,46 +99,46 @@ export async function deleteNote(noteId: string): Promise<void> {
       refresh: true,
     });
   } catch (error) {
-    // If note doesn't exist, that's fine
+    // Si la note n'existe pas, ce n'est pas grave.
     if (error && typeof error === "object" && "meta" in error) {
       const esError = error as { meta?: { statusCode?: number } };
       if (esError.meta?.statusCode === 404) {
-        console.log(`Note ${noteId} not found in index (already deleted)`);
+        console.log(`Note ${noteId} Introuvable dans l'index (déjà supprimé)`);
         return;
       }
     }
-    console.error(`Failed to delete note ${noteId}:`, error);
+    console.error(`Erreur de suppression de note ${noteId}:`, error);
     throw error;
   }
 }
 
-// Helper function to parse relative date strings
+// Fonction auxiliaire pour analyser les chaînes de dates relatives
 function parseRelativeDate(relativeDate: string): Date {
   const now = new Date();
   const match = relativeDate.match(/^(\d+)([dwmy])$/);
 
   if (!match) {
-    throw new Error(`Invalid relative date format: ${relativeDate}`);
+    throw new Error(`Format de date relative invalide: ${relativeDate}`);
   }
 
   const amount = parseInt(match[1]);
   const unit = match[2];
 
   switch (unit) {
-    case "d": // days
+    case "d": // jours
       return new Date(now.getTime() - amount * 24 * 60 * 60 * 1000);
-    case "w": // weeks
+    case "w": // semaines
       return new Date(now.getTime() - amount * 7 * 24 * 60 * 60 * 1000);
-    case "m": // months (approximate)
+    case "m": // mois (approximative)
       return new Date(now.getTime() - amount * 30 * 24 * 60 * 60 * 1000);
-    case "y": // years (approximate)
+    case "y": // année (approximative)
       return new Date(now.getTime() - amount * 365 * 24 * 60 * 60 * 1000);
     default:
-      throw new Error(`Unsupported time unit: ${unit}`);
+      throw new Error(`Unité de temps non prise en charge: ${unit}`);
   }
 }
 
-// Helper function to get content length range
+// Fonction auxiliaire pour obtenir la plage de longueur du contenu
 function getContentLengthRange(contentLength: string): {
   min?: number;
   max?: number;
@@ -178,24 +178,24 @@ export async function searchNotes(
       contentLength,
     } = searchQuery;
 
-    // Build Elasticsearch query
+    // executer Elasticsearch 
     const esQuery: any = {
       bool: {
         must: [{ term: { userId } }, { term: { isDeleted: false } }],
       },
     };
 
-    // Add text search if query provided
+    // Ajouter une recherche textuelle si une requête est fournie.
     if (query && query.trim()) {
       const multiMatchQuery: any = {
         multi_match: {
           query: query.trim(),
-          fields: ["title^2", "content"], // Boost title matches
+          fields: ["title^2", "content"], // Matchs de titre Booster
           type: "best_fields",
         },
       };
 
-      // Add fuzziness if enabled
+      // Ajouter du flux si activé
       if (fuzzy) {
         multiMatchQuery.multi_match.fuzziness = fuzziness;
       }
@@ -203,17 +203,17 @@ export async function searchNotes(
       esQuery.bool.must.push(multiMatchQuery);
     }
 
-    // Add tag filters if provided
+    // Ajoutez des filtres de balises si nécessaire.
     if (tags && tags.length > 0) {
       esQuery.bool.must.push({
         terms: { tags },
       });
     }
 
-    // Add date filters
+    // Ajouter date filters
     const dateFilters: any[] = [];
 
-    // Handle relative date (createdLast)
+    // Gérer la date relative (createdLast)
     if (createdLast) {
       try {
         const fromDate = parseRelativeDate(createdLast);
@@ -225,11 +225,11 @@ export async function searchNotes(
           },
         });
       } catch (error) {
-        console.warn(`Invalid createdLast format: ${createdLast}`);
+        console.warn(`Format createdLast invalide: ${createdLast}`);
       }
     }
 
-    // Handle absolute date range
+    // Gérer une plage de dates absolue
     if (dateFrom || dateTo) {
       const rangeFilter: any = {
         range: {
@@ -242,7 +242,7 @@ export async function searchNotes(
       }
 
       if (dateTo) {
-        // Add 1 day to include the entire end date
+        // Ajoutez 1 jour pour inclure la date de fin complète.
         const endDate = new Date(dateTo);
         endDate.setDate(endDate.getDate() + 1);
         rangeFilter.range.createdAt.lt = endDate.toISOString();
@@ -251,23 +251,25 @@ export async function searchNotes(
       dateFilters.push(rangeFilter);
     }
 
-    // Add content length filter using script query
-    // Note: Content length filtering temporarily disabled due to Elasticsearch script issues
+   // Ajouter un filtre de longueur de contenu via une requête de script
+
+    // Remarque : Le filtrage de la longueur de contenu est temporairement désactivé en raison de problèmes avec le script Elasticsearch.
     // TODO: Implement content length filtering using a different approach
     if (contentLength) {
       console.log(
-        `Content length filter requested: ${contentLength} (temporarily disabled)`
+        `Content filtre de longueur demandé: ${contentLength} (temporairement indisponible)`
       );
       // const lengthRange = getContentLengthRange(contentLength);
-      // Implementation will be added in future update
+
+// L'implémentation sera ajoutée dans une prochaine mise à jour
     }
 
-    // Add all date filters
+    // Ajouter tout date filters
     if (dateFilters.length > 0) {
       esQuery.bool.must.push(...dateFilters);
     }
 
-    // Build sort configuration
+    // Build par configuration
     let sort: any[] = [];
     switch (sortBy) {
       case "created":
@@ -309,7 +311,7 @@ export async function searchNotes(
       body: searchBody,
     });
 
-    // Handle Elasticsearch client response format
+    // Gérer le format de réponse du client Elasticsearch
     const hits = response.hits?.hits || [];
     const totalHits =
       typeof response.hits?.total === "object"
@@ -334,7 +336,7 @@ export async function searchNotes(
     const page = Math.floor(from / size) + 1;
     const totalPages = Math.ceil(total / pageSize);
 
-    // Log search analytics
+    // Analyse de la recherche de log
     await logSearchAnalytics({
       userId,
       query: query || "",
@@ -375,7 +377,7 @@ async function logSearchAnalytics(analytics: {
       },
     });
   } catch (error) {
-    // Don't fail the search if analytics logging fails
-    console.error("Failed to log search analytics:", error);
+    // Ne faites pas échouer la recherche si la journalisation analytique échoue.
+    console.error("Échec de l'enregistrement des analyses de recherche:", error);
   }
 }
